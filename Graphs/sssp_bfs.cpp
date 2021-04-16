@@ -1,12 +1,13 @@
 /** 
  * @author: Vaseem Naazleen Shaik
- * Breadth first search Algorithm
+ * Single source shortest path using Breadth first search Algorithm (SSSP using BFS)
 */
 
 #include <iostream>
 #include <map>
 #include <list>
 #include <queue>
+#include <climits>
 
 using namespace std;
 
@@ -25,32 +26,39 @@ public:
 
     void bfs(T src)
     {
-        map<T, int> visited;
+        map<T, int> distance;
         queue<T> q;
 
-        q.push(src);
-        visited[src] = true;
+        // initially all nodes will have infinte dist from source (assumption)
+        for (auto node : l)
+        {
+            distance[node.first] = INT_MAX;
+        }
 
-        cout << "BFS: ";
+        q.push(src);
+        distance[src] = 0;
 
         while (!q.empty())
         {
             T node = q.front();
             q.pop();
 
-            cout << node << " ";
-
             for (auto nbr : l[node])
             {
-                if (!visited[nbr])
+                if (distance[nbr] == INT_MAX)
                 {
                     q.push(nbr);
-                    visited[nbr] = true;
+                    distance[nbr] = distance[node] + 1;
                 }
             }
         }
 
-        cout << endl;
+        cout << "node"
+             << " dist" << endl;
+        for (auto node : l)
+        {
+            cout << node.first << "     " << distance[node.first] << endl;
+        }
     }
 
     void print()
